@@ -1,0 +1,45 @@
+# transformations are executed in order
+# compound key creation
+- tnl.organization:
+    type:
+      transformer:
+        - literal(tnl:Organization)
+    id:
+      transformer: 
+        - generate_id
+    name:
+      input:
+        - organisatie
+      transformer:
+        - copy
+
+- tnl.person:
+    type:
+      transformer:
+        - literal(tnl:Person)
+    id:
+      transformer: 
+        - generate_id
+    name: 
+      input:
+        - naam
+      transformer:
+        - copy
+
+- tnl.relation:
+    type:
+      transformer:
+        - literal(tnl:employee)
+    id:
+      transformer:
+        - generate_id
+    from:
+      input:
+        - naam
+      transformer: 
+        - copy
+    to:
+      input:  
+        - organisatie
+      transformer:
+        - copy

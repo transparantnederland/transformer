@@ -1,0 +1,87 @@
+#this file contains no person info, except for link
+#this file can also be used for parlement_nevenfuncties
+- tnl.person:
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - From
+      bb_order: 2
+    type:
+      transformer:
+        - literal(tnl:Person)
+      bb_order: 3
+
+
+- tnl.organization:
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - To
+      bb_order: 2
+    type: 
+      transformer:
+        - literal(tnl:Organization)
+      bb_order: 3
+      
+      
+- tnl.relation:
+    id: 
+      transformer:
+        - generate_id
+      bb_order: 1
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+      bb_order: 2
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+      bb_order: 3
+    type:
+      transformer:
+        - literal(tnl:related)
+      bb_order: 4
+
+
+- tnl.organization2:
+    bb_entityType: tnl.organization
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - Type
+      bb_order: 2
+    type: 
+      transformer:
+        - literal(tnl:Public)
+      bb_order: 3
+
+
+- tnl.relation2:
+    bb_entityType: 'tnl.relation'
+    id: 
+      transformer:
+        - generate_id
+      bb_order: 1
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+      bb_order: 2
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization2.id)
+      bb_order: 3
+    type:
+      transformer:
+        - literal(tnl:member)
+      bb_order: 4
+      
+      

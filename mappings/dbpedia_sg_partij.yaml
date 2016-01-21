@@ -1,0 +1,45 @@
+#this file contains no person info, except for link
+#this file can also be used for parlement_nevenfuncties
+
+- tnl.person:
+    id:
+      transformer:
+        - generate_id
+    name:
+      input:
+        - naam
+    type:
+      transformer:
+        - literal(tnl:Person)
+    data:
+      bb_subProperty: true
+      'vvnaam':
+        input:
+          - 'volledige naam'
+          
+          
+     
+- tnl.organization:
+    id:
+      transformer:
+        - generate_id
+    name:
+      input:
+        - partij
+    type: 
+      transformer:
+        - literal(tnl:PoliticalParty)
+
+- tnl.relation:
+    id: 
+      transformer:
+        - generate_id
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+    type: 
+      transformer:
+        - literal(tnl:member)

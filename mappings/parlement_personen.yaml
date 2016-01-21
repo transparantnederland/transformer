@@ -1,0 +1,100 @@
+#this file contains no person info, except for link
+#this file can also be used for parlement_nevenfuncties
+- chamber:
+    bb_entityType: 'tnl.organization'
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    bb_splitCondition:
+      input: "source"
+      value: 'Eerste en Tweede Kamer'
+      newValues:
+        - "Eerste Kamer"
+        - "Tweede Kamer"
+    name:
+      input:
+        - "source"
+      bb_order: 2
+    type:
+      transformer:
+        - literal(tnl:Public)
+      bb_order: 3
+
+- party:
+    bb_entityType: 'tnl.organization'
+    bb_splitCondition:
+      input: "partij"
+      regex: ", ?"
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - "partij"
+      bb_order: 2
+    type:
+      transformer:
+        - literal(tnl:PoliticalParty)
+      bb_order: 3
+
+- politician:
+    bb_entityType: 'tnl.person'
+    bb_skipCondition:
+      input: "achternaam"
+      #value: /^$/
+      regex: "^$"
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - "roepnaam"
+        - "achternaam"
+      transformer:
+        - format({roepnaam} {achternaam})
+      bb_order: 2
+    type:
+      transformer:
+        - literal(tnl:Person)
+      bb_order: 3
+
+- partyMembership:
+    bb_entityType: 'tnl.relation'
+    id: 
+      transformer:
+        - generate_id
+      bb_order: 1
+    from:
+      transformer:
+        - getSiblingProperty(politician.id)
+      bb_order: 2
+    to:
+      transformer:
+        - getSiblingProperty(party.id)
+      bb_order: 3
+    type:
+      transformer:
+        - literal(tnl:member)
+      bb_order: 4
+
+- chamberMembership:
+    bb_entityType: 'tnl.relation'
+    id: 
+      transformer:
+        - generate_id
+      bb_order: 1
+    from:
+      transformer:
+        - getSiblingProperty(politician.id)
+      bb_order: 2
+    to:
+      transformer:
+        - getSiblingProperty(chamber.id)
+      bb_order: 3
+    type:
+      transformer:
+        - literal(tnl:member)
+      bb_order: 4

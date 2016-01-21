@@ -1,0 +1,81 @@
+# transformations are executed in order
+# compound key creation
+
+- tnl.person:
+    type:
+      transformer:
+        - literal(tnl:Person)
+    id:
+      transformer: 
+        - generate_id
+    name: 
+      input:
+        - voornamen
+        - achternaam
+      transformer:
+        - format({voornamen} {achternaam})
+
+- tnl.organization:
+    type:
+      transformer:
+        - literal(tnl:Organization)
+    id:
+      transformer: 
+        - generate_id
+    name:
+      input:
+        - source
+      transformer:
+        - join
+
+- tnl.relation:
+    type:
+      transformer:
+        - literal(tnl:member)
+    id:
+      transformer:
+        - generate_id
+    from:
+      input: 
+        - voornamen
+        - achternaam
+      transformer: 
+        - format({voornamen} {achternaam})
+    to:
+      input:  
+        - partij
+      transformer:
+        - join
+
+
+- tnl.organization:
+    type:
+      transformer:
+        - literal(tnl:PoliticalParty)
+    id:
+      transformer: 
+        - generate_id
+    name:
+      input:
+        - partij
+      transformer:
+        - join
+
+- tnl.relation:
+    type:
+      transformer:
+        - literal(tnl:member)
+    id:
+      transformer:
+        - generate_id
+    from:
+      input: 
+        - voornamen
+        - achternaam
+      transformer: 
+        - format({voornamen} {achternaam})
+    to:
+      input:  
+        - source
+      transformer:
+        - join

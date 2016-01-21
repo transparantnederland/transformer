@@ -1,0 +1,107 @@
+- tnl.person:
+    id:
+      input:
+        - b1-nummer
+        - id bp
+        - id ep
+      transformer:
+        - format({b1-nummer}_{id bp}{id ep})
+        - replace(-,)
+    name:
+      input:
+          - naam
+    type:
+      transformer:
+        - literal(tnl:Person)
+    # validSince:
+    #   input:
+    #     - begin periode
+    # validUntil:
+    #   input:
+    #     - einde periode
+
+- tnl.organization:
+    bb_skipCondition:
+      input:
+        - waarde
+      regex: (campagneleider|fractie|vertrouwenspersoon|programberaad|verkiezingen|kandidaatstelling|persoonlijk medewerker|verving|vervangen|beleidsmedewerker)
+      value:
+        - "J. van Leeuwen  Johanna (Hannie)"
+        - 'CDA (Christen-Democratisch Appèl)'
+        - 'adviseur voor justitie-aangelegenheden van de PvdA-Tweede Kamerfractie'
+        - 'assistent-griffier vaste commissie voor Justitie, Tweede Kamer der Staten-Generaal'
+        - 'medewerker VVD-fractie Tweede Kamer der Staten-Generaal'
+        - 'ambtelijk secretaris VVD-fractie Tweede Kamer der Staten-Generaal'
+        - 'beleidsmedewerker economische zaken en landbouw, PvdA-Tweede Kamerfractie'
+        - 'secretaris fractiegroep sociaal-economisch beleid, PvdA-Tweede Kamerfractie'
+        - 'lid PvdA-commissie kandidaatstelling Tweede Kamerverkiezingen 2012'
+        - 'plaatsvervangend rapporteur namens de Eerste Kamer in de Europese Conventie voor een nieuw Europees Verdrag'
+        - 'lid commissie kandidaatstelling VVD Tweede Kamerverkiezingen'
+        - 'vertegenwoordiger namens de Eerste Kamer in de Europese Conventie voor de vaststelling van een Europese Grondwet'
+        - 'beleidsmedewerker PvdA-fractie Tweede Kamer der Staten-Generaal'
+        - 'coördinator ruimte PvdA-fractie Tweede Kamer der Staten-Generaal'
+        - 'lid bestuur Stichting ondersteuning Tweede Kamerfractie PvdA'
+        - 'Werd op grond van artikel X10 van de Kieswet tussen 12 april en 2 augustus 2011 tijdelijk als Tweede Kamerlid vervangen door Myrthe Hilkens'
+        - 'lid bestuur Stichting Ondersteuning Tweede Kamerfractie PvdA'
+        - 'vertegenwoordiger namens de Tweede Kamer in de Europese Conventie voor de vaststelling van een Europese Grondwet'
+        - 'medewerker VVD-Tweede Kamerlid Jos van Rey'
+        - 'plaatsvervangend lid namens de Tweede Kamer in de Europese Conventie voor de vaststelling van een Europese Grondwet'
+        - 'Verving op grond van artikel X10 van de Kieswet van 13 mei tot 17 augustus 2008 Nicolien van Vroonhoven-Kok als Tweede Kamerlid'
+        - 'Prof.Dr. E. Dijkgraaf  Elbert (Elbert)'
+        - 'medewerker SP-Tweede Kamerleden Remi Poppe en Harry van Bommel (beleidsterreinen defensie, landbouw en voedselveiligheid)'
+        - 'lid dienstcommissie Tweede Kamer der Staten-Generaal'
+        - 'gedetacheerd bij parlementaire enquêtecommissie RSV (Tweede Kamer der Staten-Generaal)'
+        - 'medewerker D66-Tweede Kamerlid Louise Groenman'
+        - 'penningmeester AOV Tweede Kamer der Staten-Generaal'
+        - "'verkenner' namens de Tweede Kamer bij kabinetsformatie"
+        - 'lid parlementaire enquêtecommissie opsporingsmethoden (Tweede Kamer der Staten-Generaal)'
+        - 'begeleider nieuwe Tweede Kamerleden ChristenUnie'
+        - 'medewerker VVD-Tweede Kamerleden Braams, Dees en Jacobse'
+        - 'medewerker PvdA-Tweede Kamerlid'
+        - 'secretaris Reünisten oud-CDA-Tweede Kamerleden'
+        - 'lid bestuur "Duiventil", organisatie van oud-CDA-Tweede Kamerleden en -medewerkers'
+        - 'medewerker VVD-Tweede Kamerlid H.H. Jacobse'
+        - 'medewerker PvdA-Tweede Kamerlid J.W. Kersten'
+        - 'lid selectiecommissie VVD Tweede Kamer (o.l.v. Jan Kamminga)'
+        - 'lid partijbestuur'
+        - 'politiek adviseur VVD-Tweede Kamerlid Anton van Schijndel'
+        - 'senior stafmedewerker contacten Eerste en Tweede Kamer, ministerie van Onderwijs, Cultuur en Wetenschappen'
+        - 'Vervangt op grond van artikel X10 van de Kieswet vanaf 17 november 2015 Esther Ouwehand als Tweede Kamerlid'
+        - 'lid economenadviesgroep van PvdA-Tweede Kamerlid Ferd Crone'
+    id:
+      input:
+        - 'waarde'
+      transformer:
+        - parseFunction
+        - format({organization})
+        - dropNonWordCharacters
+        - invoke(toLowerCase)
+    name:
+      input:
+        - waarde
+      transformer:
+        - parseFunction
+        # - pdcWaardeParse
+        - format({organization})
+    type:
+      input:
+        - waarde
+      transformer:
+        - parseFunction
+        # - pdcWaardeParse
+        - format({organizationType})
+
+- tnl.relation:
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+    type:
+      input:
+        - waarde
+      transformer:
+        - parseFunction
+        # - pdcWaardeParse
+        - format({relation})

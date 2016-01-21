@@ -1,0 +1,90 @@
+#this file contains no person info, except for link
+#this file can also be used for parlement_nevenfuncties
+- tnl.organization:
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - functie
+      transformer:
+        - getPositionAndCompany
+        - returnPropertyFromObject(company)
+        - getCompanyName
+      bb_order: 2
+    type: 
+      transformer:
+        - literal(tnl:Organization)
+      bb_order: 3
+    data:
+      bb_subProperty: true
+      bb_order: 4
+      place:
+        input:
+          - functie
+        transformer:
+          #- lookupCompanyInTNL
+          - getPositionAndCompany
+          - returnPropertyFromObject(company)
+          - getCompanyPlace
+
+- tnl.person:
+    id:
+      transformer:
+        - generate_id
+      bb_order: 1
+    name:
+      input:
+        - name
+      bb_order: 2
+    type:
+      transformer:
+        - literal(tnl:Person)
+      bb_order: 3
+
+- tnl.relation:
+    id: 
+      transformer:
+        - generate_id
+      bb_order: 1
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+      bb_order: 2
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+      bb_order: 3
+    type:
+      transformer:
+        - literal(tnl:member)
+      bb_order: 4
+    data:
+      bb_subProperty: true
+      bb_order: 5
+      jobtitle:
+        input:
+          - functie
+        transformer:
+          - getPositionAndCompany
+          - returnPropertyFromObject(jobTitle)
+        bb_order: 1
+      start:
+        input:
+          - functie
+        transformer:
+          - getAllDatesDutch
+          - takeItemFromArray(0)
+          - format_utc
+        bb_order: 2
+      end:
+        input:
+          - functie
+        transformer:
+          - getAllDatesDutch
+          - takeItemFromArray(-1)
+          - format_utc
+        bb_order: 3
+      department:
+        bb_order: 4

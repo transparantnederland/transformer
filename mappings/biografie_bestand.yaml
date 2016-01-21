@@ -1,0 +1,56 @@
+- tnl.person:
+    id:
+      input:
+        - b1-nummer
+        - begin periode
+        - einde periode
+      transformer:
+        - format({b1-nummer}_{begin periode}{einde periode})
+        - replace(-,)
+    name:
+      input:
+          - voorletters
+          - prepositie
+          - achternaam
+      transformer:
+        - format({voorletters} {prepositie} {achternaam})
+        - replace(  , )
+    type:
+      transformer:
+        - literal(tnl:Person)
+    validSince:
+      input:
+        - begin periode
+    validUntil:
+      input:
+        - einde periode
+
+- tnl.organization:
+    id:
+      input:
+        - 'functie'
+      transformer:
+        - biografieFunctieToOrganizationName
+        - dropNonWordCharacters
+        - invoke(toLowerCase)
+    name:
+      input:
+        - 'functie'
+      transformer:
+        - biografieFunctieToOrganizationName
+    type:
+      transformer:
+        - literal(tnl:Public)
+
+- tnl.relation:
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.id)
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+    type:
+      input:
+        - functie
+      transformer:
+        - getGovernmentRelation

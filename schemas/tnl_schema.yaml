@@ -1,0 +1,139 @@
+---
+  tnl.organization:
+    $schema: "http://json-schema.org/draft-04/schema#"
+    title: "tnl.organisation"
+    description: "An organisation in the TNL database"
+    type: "object"
+    properties: 
+      id: 
+        description: "The unique identifier for an organization"
+        type: "string"
+      uri:
+        description: "The unique resource identifier for an organization"
+        type: "string"
+      name: 
+        description: "Name of the organization"
+        descriptionLong: "Please use the name without B.V. or other such additions"
+        type: "string"
+      type: 
+        description: "Type of the organization."
+        type: "string"
+        enum:
+          - "tnl:Organization"
+          - "tnl:Commercial"
+          - "tnl:Public"
+          - "tnl:NonProfit"
+          - "tnl:PoliticalParty"
+      data:
+        description: "Additional properties"
+        type: "object"
+    oneOf:
+      - required:
+        - "id"
+        - "name"
+        - "type"
+      - required:
+        - "uri"
+        - "name"
+        - "type"
+    fixed:
+      - "id"
+      - "uri"
+    hidden:
+      - "id"
+      - "uri"
+
+  tnl.person: 
+    $schema: "http://json-schema.org/draft-04/schema#"
+    title: "tnl.person"
+    description: "A person in the TNL database"
+    type: "object"
+    properties:
+      id: 
+        description: "The unique identifier for a person"
+        type: "string"
+      uri:
+        description: "The unique resource identifier for a person"
+        type: "string"
+      name: 
+        description: "Name of the person"
+        type: "string"
+      birthdate:
+        description: "Birthdate of the person"
+        type: "string"
+      type:
+        description: "Type of the person"
+        type: "string"
+        enum:
+          - "tnl:Person"
+      validSince:
+        description: "When this person started being relevant"
+        type: "string"
+        # pattern: ^-?([0-9]{1,4}|[0-9]{2})-([0]?[1-9]|[1][0-2])-([0]?[1-9]|[1|2][0-9]|[3][0|1])$
+      validUntil:
+        description: "When this person stopped being relevant"
+        type: "string"
+        # pattern: ^-?([0-9]{1,4}|[0-9]{2})-([0]?[1-9]|[1][0-2])-([0]?[1-9]|[1|2][0-9]|[3][0|1])$
+      data:
+        description: "Additional properties"
+        type: "object"
+    oneOf:
+      - required:
+        - "id"
+        - "name"
+        - "type"
+      - required:
+        - "uri"
+        - "name"
+        - "type"
+    fixed:
+      - "id"
+      - "uri"
+    hidden:
+      - "id"
+      - "uri"
+
+  tnl.relation: 
+    $schema: "http://json-schema.org/draft-04/schema#"
+    title: "tnl.relation"
+    description: "A relation in the TNL database"
+    type: "object"
+    properties: 
+      id: 
+        description: "The unique identifier for a relation"
+        type: "string"
+      uri:
+        description: "The unique resource identifier for a relation"
+        type: "string"
+      from: 
+        description: "Subject id of the relation"
+        type: "string"
+      to: 
+        description: "Object id of the relation"
+        type: "string"
+      type:
+        description: "Type of the relation."
+        type: "string"
+        enum:
+          - "tnl:same"
+          - "tnl:parent"
+          - "tnl:related"
+          - "tnl:member"
+          - "tnl:boardmember"
+          - "tnl:commissioner"
+          - "tnl:advisor"
+          - "tnl:employee"
+          - "tnl:lobbyist"
+      data:
+        description: "Additional properties"
+        type: "object"
+    required:
+      - "from"
+      - "to"
+      - "type"
+    fixed:
+      - "from"
+      - "to"
+    hidden:
+      - "from"
+      - "to"

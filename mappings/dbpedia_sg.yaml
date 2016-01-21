@@ -1,0 +1,74 @@
+#this file contains no person info, except for link
+#this file can also be used for parlement_nevenfuncties
+
+- tnl.person:
+    uri:
+      input:
+        - 'db-uri'
+      transformer:
+        - unique(db-uri)
+    name:
+      input:
+        - naam
+    type:
+      transformer:
+        - literal(tnl:Person)
+    data:
+      bb_subProperty: true
+      volledige naam:
+        input:
+          - 'volledige naam'
+      abstract:
+        input:
+          - 'abstract'
+      db-uri:
+        input:
+          - 'db-uri'
+
+- tnl.organization:
+    id:
+      input:
+        - 'functie'
+      transformer:
+        - parseFunction
+        - returnPropertyFromObject(organization)
+        - dropNonWordCharacters
+    name:
+      input:
+        - functie
+      transformer:
+        - parseFunction
+        - returnPropertyFromObject(organization)
+    type:
+      input:
+        - functie
+      transformer:
+        - parseFunction
+        - returnPropertyFromObject(organizationType)
+
+- tnl.relation:
+    bb_splitCondition:
+      input: functie
+      regex: ;
+      unique: true # ignores similar values
+    bb_skipCondition:
+      input: functie
+      value:
+        - Minister
+        - Wethouder
+        - Burgemeester
+        - Gemeenteraad
+        - '1982'
+        - Medewerker van het P.v.d.A.-Tweede Kamerlid Kosto
+    from:
+      transformer:
+        - getSiblingProperty(tnl\.person.uri)
+    to:
+      transformer:
+        - getSiblingProperty(tnl\.organization.id)
+    type:
+      input:
+        - functie
+      transformer:
+        - parseFunction
+        - returnPropertyFromObject(relation)

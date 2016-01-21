@@ -1,0 +1,32 @@
+{
+  "name": "tnl-uploader",
+  "version": "1.0.0",
+  "description": "a tool to upload csv files to tnl api",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waagsociety/TNL-uploader"
+  },
+  "author": "Ivo de Kler <ivo.de.kler@gmail.com> (http://github.com/w0ps)",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.2",
+    "bumblebee": "waagsociety/bumblebee",
+    "cheerio": "^0.19.0",
+    "dumbstore": "^2.1.1",
+    "leven": "^2.0.0",
+    "request": "^2.62.0",
+    "shortid": "^2.2.4",
+    "stringlist-regexp": "^1.0.2",
+    "underscore": "^1.8.3",
+    "enrich-csv": "^1.0.0"
+  },
+  "devDependencies": {
+    "expect": "^1.13.4",
+    "mocha": "^2.3.4"
+  }
+}
